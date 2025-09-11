@@ -302,6 +302,3 @@ Built with 💛 by the [**Flamingo**](https://www.flamingo.run) team
 
 </div>
 
-🦩
-
-</div>

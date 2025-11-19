@@ -131,7 +131,6 @@ export function SsoConfigurationTab() {
         })
       },
       variant: 'outline',
-      className: '!h-12 !w-12 !min-w-[48px] !p-0 flex items-center justify-center'
     },
     {
       label: 'Details',
@@ -147,7 +146,6 @@ export function SsoConfigurationTab() {
         })
       },
       variant: 'outline',
-      className: "bg-ods-card border-ods-border hover:bg-ods-bg-hover text-ods-text-primary font-['DM_Sans'] font-bold text-[18px] px-4 py-3 h-12"
     }
   ], [])
 

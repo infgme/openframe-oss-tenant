@@ -1,0 +1,8 @@
+kafka:
+  image:
+    registry: ghcr.io/flamingo-stack/registry
+
+  metrics:
+    jmx:
+      image:
+        registry: ghcr.io/flamingo-stack/registry

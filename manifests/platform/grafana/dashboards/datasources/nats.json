@@ -63,7 +63,7 @@
             "steps": [
               {
                 "color": "red",
-                "value": null
+                "value": 0
               },
               {
                 "color": "green",
@@ -75,8 +75,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 4,
+        "h": 3,
+        "w": 3,
         "x": 0,
         "y": 1
       },
@@ -101,12 +101,13 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "up{service=\"nats\"}",
+          "expr": "count(rate(container_cpu_usage_seconds_total{namespace=\"datasources\", container=\"nats\"}[2m])) by (pod) > 0",
+          "instant": true,
           "legendFormat": "{{pod}}",
           "refId": "A"
         }
       ],
-      "title": "NATS Status",
+      "title": "Status",
       "type": "stat"
     },
     {
@@ -117,7 +118,148 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 25,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 7,
+        "x": 3,
+        "y": 1
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "expr": "count(rate(container_cpu_usage_seconds_total{namespace=\"datasources\", container=\"nats\"}[2m])) by (pod) > 0",
+          "legendFormat": "{{pod}}",
+          "refId": "A"
+        }
+      ],
+      "title": "History",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 8,
+      "panels": [],
+      "title": "System",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 25,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -125,48 +267,367 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
-          "unit": "s"
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 4,
-        "y": 1
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 5
       },
-      "id": 3,
+      "id": 9,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
+        "legend": {
           "calcs": [
-            "lastNotNull"
+            "mean",
+            "max"
           ],
-          "fields": "",
-          "values": false
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
       },
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "time() - process_start_time_seconds{service=\"nats\"}",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"datasources\", pod=~\"nats.*\", container=\"nats\"}[5m])) by (pod)",
           "legendFormat": "{{pod}}",
           "refId": "A"
         }
       ],
-      "title": "Uptime",
-      "type": "stat"
+      "title": "CPU Usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 25,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 8,
+        "y": 5
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "expr": "sum(container_memory_working_set_bytes{namespace=\"datasources\", pod=~\"nats.*\", container=\"nats\"}) by (pod)",
+          "legendFormat": "{{pod}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Memory Usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 25,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 25
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    10,
+                    10
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 16,
+        "y": 5
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "expr": "kubelet_volume_stats_used_bytes{namespace=\"datasources\", persistentvolumeclaim=~\"nats.*\"}",
+          "legendFormat": "{{persistentvolumeclaim}}",
+          "refId": "A"
+        },
+        {
+          "expr": "kubelet_volume_stats_capacity_bytes{namespace=\"datasources\", persistentvolumeclaim=~\"nats.*\"}",
+          "legendFormat": "{{persistentvolumeclaim}}",
+          "refId": "B"
+        }
+      ],
+      "title": "Storage",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 25,
+      "panels": [],
+      "title": "Logs",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 26,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "expr": "{pod=~\"nats.*\", namespace=\"datasources\"} | logfmt | line_format \"{{if .msg}}{{.msg}}{{else}}{{__line__}}{{end}}\"",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs",
+      "type": "logs"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 27,
+      "panels": [],
+      "title": "NATS Metrics",
+      "type": "row"
     },
     {
       "datasource": {
@@ -194,8 +655,8 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 8,
-        "y": 1
+        "x": 0,
+        "y": 25
       },
       "id": 4,
       "options": {
@@ -218,7 +679,7 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "nats_varz_connections{service=\"nats\"}",
+          "expr": "nats_varz_connections{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}",
           "legendFormat": "{{pod}}",
           "refId": "A"
         }
@@ -252,8 +713,8 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 12,
-        "y": 1
+        "x": 4,
+        "y": 25
       },
       "id": 5,
       "options": {
@@ -276,7 +737,7 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "nats_connz_subscriptions{service=\"nats\"}",
+          "expr": "nats_connz_subscriptions{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}",
           "legendFormat": "{{pod}}",
           "refId": "A"
         }
@@ -318,8 +779,8 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 16,
-        "y": 1
+        "x": 8,
+        "y": 25
       },
       "id": 6,
       "options": {
@@ -342,7 +803,7 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "nats_varz_slow_consumers{service=\"nats\"}",
+          "expr": "nats_varz_slow_consumers{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}",
           "legendFormat": "{{pod}}",
           "refId": "A"
         }
@@ -388,8 +849,8 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 20,
-        "y": 1
+        "x": 12,
+        "y": 25
       },
       "id": 31,
       "options": {
@@ -410,7 +871,7 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "nats_subsz_cache_hit_rate{service=\"nats\"} * 100",
+          "expr": "nats_subsz_cache_hit_rate{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"} * 100",
           "legendFormat": "{{pod}}",
           "refId": "A"
         }
@@ -424,305 +885,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 5
-      },
-      "id": 8,
-      "panels": [],
-      "title": "System",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 25,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 6
-      },
-      "id": 9,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "pluginVersion": "12.3.0",
-      "targets": [
-        {
-          "expr": "nats_varz_cpu{service=\"nats\"}",
-          "legendFormat": "{{pod}}",
-          "refId": "A"
-        }
-      ],
-      "title": "CPU Usage",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 25,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 8,
-        "y": 6
-      },
-      "id": 10,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "pluginVersion": "12.3.0",
-      "targets": [
-        {
-          "expr": "nats_varz_mem{service=\"nats\"}",
-          "legendFormat": "{{pod}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Memory Usage",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 25,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 16,
-        "y": 6
-      },
-      "id": 11,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "pluginVersion": "12.3.0",
-      "targets": [
-        {
-          "expr": "go_goroutines{service=\"nats\"}",
-          "legendFormat": "{{pod}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Goroutines",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 14
+        "y": 29
       },
       "id": 12,
       "panels": [],
@@ -794,7 +957,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 15
+        "y": 30
       },
       "id": 13,
       "options": {
@@ -816,12 +979,12 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "rate(nats_varz_in_msgs{service=\"nats\"}[5m])",
+          "expr": "rate(nats_varz_in_msgs{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}[5m])",
           "legendFormat": "In",
           "refId": "A"
         },
         {
-          "expr": "rate(nats_varz_out_msgs{service=\"nats\"}[5m])",
+          "expr": "rate(nats_varz_out_msgs{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}[5m])",
           "legendFormat": "Out",
           "refId": "B"
         }
@@ -894,7 +1057,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 15
+        "y": 30
       },
       "id": 14,
       "options": {
@@ -916,12 +1079,12 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "rate(nats_varz_in_bytes{service=\"nats\"}[5m])",
+          "expr": "rate(nats_varz_in_bytes{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}[5m])",
           "legendFormat": "In",
           "refId": "A"
         },
         {
-          "expr": "rate(nats_varz_out_bytes{service=\"nats\"}[5m])",
+          "expr": "rate(nats_varz_out_bytes{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}[5m])",
           "legendFormat": "Out",
           "refId": "B"
         }
@@ -994,7 +1157,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 15
+        "y": 30
       },
       "id": 15,
       "options": {
@@ -1016,12 +1179,12 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "nats_varz_connections{service=\"nats\"}",
+          "expr": "nats_varz_connections{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}",
           "legendFormat": "Current",
           "refId": "A"
         },
         {
-          "expr": "nats_varz_total_connections{service=\"nats\"}",
+          "expr": "nats_varz_total_connections{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}",
           "legendFormat": "Total",
           "refId": "B"
         }
@@ -1035,7 +1198,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 38
       },
       "id": 16,
       "panels": [],
@@ -1069,7 +1232,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 24
+        "y": 39
       },
       "id": 17,
       "options": {
@@ -1092,7 +1255,7 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "nats_server_total_streams{service=\"nats\"}",
+          "expr": "nats_server_total_streams{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}",
           "legendFormat": "{{pod}}",
           "refId": "A"
         }
@@ -1127,7 +1290,7 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 24
+        "y": 39
       },
       "id": 18,
       "options": {
@@ -1150,7 +1313,7 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "nats_server_total_consumers{service=\"nats\"}",
+          "expr": "nats_server_total_consumers{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}",
           "legendFormat": "{{pod}}",
           "refId": "A"
         }
@@ -1185,7 +1348,7 @@
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 24
+        "y": 39
       },
       "id": 19,
       "options": {
@@ -1208,7 +1371,7 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "nats_server_total_messages{service=\"nats\"}",
+          "expr": "nats_server_total_messages{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}",
           "legendFormat": "{{pod}}",
           "refId": "A"
         }
@@ -1251,7 +1414,7 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 24
+        "y": 39
       },
       "id": 22,
       "options": {
@@ -1274,7 +1437,7 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "nats_varz_jetstream_stats_api_errors{service=\"nats\"}",
+          "expr": "nats_varz_jetstream_stats_api_errors{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}",
           "legendFormat": "{{pod}}",
           "refId": "A"
         }
@@ -1321,7 +1484,7 @@
         "h": 4,
         "w": 4,
         "x": 16,
-        "y": 24
+        "y": 39
       },
       "id": 21,
       "options": {
@@ -1342,7 +1505,7 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "100 * nats_varz_jetstream_stats_storage{service=\"nats\"} / nats_varz_jetstream_config_max_storage{service=\"nats\"}",
+          "expr": "100 * nats_varz_jetstream_stats_storage{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"} / nats_varz_jetstream_config_max_storage{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}",
           "legendFormat": "{{pod}}",
           "refId": "A"
         }
@@ -1378,7 +1541,7 @@
         "h": 4,
         "w": 4,
         "x": 20,
-        "y": 24
+        "y": 39
       },
       "id": 20,
       "options": {
@@ -1401,7 +1564,7 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "nats_varz_jetstream_stats_storage{service=\"nats\"}",
+          "expr": "nats_varz_jetstream_stats_storage{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}",
           "legendFormat": "{{pod}}",
           "refId": "A"
         }
@@ -1468,15 +1631,65 @@
           },
           "unit": "bytes"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Used"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [10, 10],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": false
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 28
+        "y": 43
       },
-      "id": 23,
+      "id": 28,
       "options": {
         "legend": {
           "calcs": [
@@ -1495,17 +1708,17 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "nats_varz_jetstream_stats_storage{service=\"nats\"}",
+          "expr": "nats_varz_jetstream_stats_memory{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}",
           "legendFormat": "Used",
           "refId": "A"
         },
         {
-          "expr": "nats_varz_jetstream_config_max_storage{service=\"nats\"}",
+          "expr": "nats_varz_jetstream_config_max_memory{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}",
           "legendFormat": "Max",
           "refId": "B"
         }
       ],
-      "title": "JetStream Storage",
+      "title": "JetStream Memory",
       "type": "timeseries"
     },
     {
@@ -1573,7 +1786,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 28
+        "y": 43
       },
       "id": 24,
       "options": {
@@ -1595,12 +1808,12 @@
       "pluginVersion": "12.3.0",
       "targets": [
         {
-          "expr": "rate(nats_varz_jetstream_stats_api_total{service=\"nats\"}[5m])",
+          "expr": "rate(nats_varz_jetstream_stats_api_total{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}[5m])",
           "legendFormat": "Total",
           "refId": "A"
         },
         {
-          "expr": "rate(nats_varz_jetstream_stats_api_errors{service=\"nats\"}[5m])",
+          "expr": "rate(nats_varz_jetstream_stats_api_errors{app_kubernetes_io_name=\"nats\", namespace=\"datasources\", container=\"prom-exporter\"}[5m])",
           "legendFormat": "Errors",
           "refId": "B"
         }
@@ -1613,9 +1826,9 @@
   "refresh": "30s",
   "schemaVersion": 42,
   "tags": [
+    "datasources",
     "nats",
-    "messaging",
-    "streaming"
+    "messaging"
   ],
   "templating": {
     "list": []

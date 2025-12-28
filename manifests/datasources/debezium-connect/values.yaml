@@ -8,6 +8,11 @@ image:
   registry: ghcr.io/flamingo-stack/registry
   repository: debezium/connect
   tag: "3.3.2"
+podAnnotations:
+  loki.grafana.com/scrape: "true"
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "9404"
+  prometheus.io/path: "/metrics"
 
 resources:
   requests:
@@ -22,13 +27,6 @@ probes:
     enabled: true
   readiness:
     enabled: true
-  
-service:
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "9404"
-    prometheus.io/path: "/metrics"
-
 
 metrics:
   enabled: true

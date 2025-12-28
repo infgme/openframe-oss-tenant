@@ -18,6 +18,7 @@ redis:
   auth:
     enabled: false
 
+
   commonConfiguration: |-
     maxmemory 200mb
     maxmemory-policy allkeys-lru
@@ -53,9 +54,7 @@ redis:
       repository: bitnamilegacy/redis-exporter
       tag: 1.76.0-debian-12-r0
     podAnnotations:
-      prometheus.io/scrape: "false"
-    service:
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "9121"
-        prometheus.io/path: "/metrics"
+      loki.grafana.com/scrape: "true"
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9121"
+      prometheus.io/path: "/metrics"

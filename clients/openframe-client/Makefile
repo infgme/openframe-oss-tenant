@@ -34,5 +34,6 @@ clean:
 crossinstall:
 	$(CARGO) install cross --git https://github.com/cross-rs/cross
 
+
 crossbuild:
 	cross build --release $(TARGET_FLAG)

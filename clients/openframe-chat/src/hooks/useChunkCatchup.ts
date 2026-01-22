@@ -1,5 +1,3 @@
-'use client'
-
 import { useMemo, useCallback } from 'react'
 import {
   useChunkCatchup as useChunkCatchupCore,
@@ -7,10 +5,10 @@ import {
   type NatsMessageType,
   type UseChunkCatchupOptions as CoreChunkCatchupOptions,
   type UseChunkCatchupReturn,
+  type ChatType,
   CHAT_TYPE,
 } from '@flamingo-stack/openframe-frontend-core'
-import { apiClient } from '@lib/api-client'
-import { API_ENDPOINTS } from '../constants'
+import { tokenService } from '../services/tokenService'
 
 export type { ChunkData, NatsMessageType, UseChunkCatchupReturn }
 
@@ -22,28 +20,41 @@ interface UseChunkCatchupOptions {
 export function useChunkCatchup({ dialogId, onChunkReceived }: UseChunkCatchupOptions): UseChunkCatchupReturn {
   const fetchChunks = useCallback(async (
     dialogId: string,
-    chatType: typeof CHAT_TYPE[keyof typeof CHAT_TYPE],
+    chatType: ChatType,
     fromSequenceId?: number | null
   ): Promise<ChunkData[]> => {
-    let url = `${API_ENDPOINTS.DIALOG_CHUNKS}/${dialogId}/chunks?chatType=${chatType}`
+    await tokenService.ensureTokenReady()
+    const token = tokenService.getCurrentToken()
+    const apiUrl = tokenService.getCurrentApiBaseUrl()
+    
+    if (!token || !apiUrl) {
+      throw new Error('Token or API URL not available')
+    }
+
+    let url = `${apiUrl}/chat/api/v1/dialogs/${dialogId}/chunks?chatType=${chatType}`
     if (fromSequenceId !== null && fromSequenceId !== undefined) {
       url += `&fromSequenceId=${fromSequenceId}`
     }
     
-    const response = await apiClient.get<ChunkData[]>(url)
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
     
     if (!response.ok) {
       console.error(`Failed to fetch ${chatType} chunks:`, response.status)
       return []
     }
     
-    return response.data || []
+    return await response.json() as ChunkData[]
   }, [])
 
   const options = useMemo<CoreChunkCatchupOptions>(() => ({
     dialogId,
     onChunkReceived,
-    chatTypes: [CHAT_TYPE.CLIENT, CHAT_TYPE.ADMIN],
+    chatTypes: [CHAT_TYPE.CLIENT],
     fetchChunks,
   }), [dialogId, onChunkReceived, fetchChunks])
 
